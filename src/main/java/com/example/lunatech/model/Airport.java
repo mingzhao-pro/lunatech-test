@@ -1,26 +1,33 @@
 package com.example.lunatech.model;
 
-import java.util.Set;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
+@Document(collection = "airports")
 public class Airport {
 
+    @Id
+    ObjectId databaseId;
     private String id;
     private String ident;
     private String type;
     private String name;
-    private String latitude_deg;
-    private String longitude_deg;
-    private String elevation_ft;
+    private String latitudeDeg;
+    private String longitudeDeg;
+    private String elevationFt;
     private String continent;
-    private String iso_country;
-    private String iso_region;
+    @Field("iso_country")
+    private String isoCountry;
+    private String isoRegion;
     private String municipality;
-    private String scheduled_service;
-    private String gps_code;
-    private String iata_code;
-    private String local_code;
-    private String home_link;
-    private String wikipedia_link;
+    private String scheduledService;
+    private String gpsCode;
+    private String iataCode;
+    private String localCode;
+    private String homeLink;
+    private String wikipediaLink;
     private String keywords;
 //    private Set<Runway> runways;
 
@@ -56,28 +63,28 @@ public class Airport {
         this.name = name;
     }
 
-    public String getLatitude_deg() {
-        return latitude_deg;
+    public String getLatitudeDeg() {
+        return latitudeDeg;
     }
 
-    public void setLatitude_deg(String latitude_deg) {
-        this.latitude_deg = latitude_deg;
+    public void setLatitudeDeg(String latitudeDeg) {
+        this.latitudeDeg = latitudeDeg;
     }
 
-    public String getLongitude_deg() {
-        return longitude_deg;
+    public String getLongitudeDeg() {
+        return longitudeDeg;
     }
 
-    public void setLongitude_deg(String longitude_deg) {
-        this.longitude_deg = longitude_deg;
+    public void setLongitudeDeg(String longitudeDeg) {
+        this.longitudeDeg = longitudeDeg;
     }
 
-    public String getElevation_ft() {
-        return elevation_ft;
+    public String getElevationFt() {
+        return elevationFt;
     }
 
-    public void setElevation_ft(String elevation_ft) {
-        this.elevation_ft = elevation_ft;
+    public void setElevationFt(String elevationFt) {
+        this.elevationFt = elevationFt;
     }
 
     public String getContinent() {
@@ -88,20 +95,20 @@ public class Airport {
         this.continent = continent;
     }
 
-    public String getIso_country() {
-        return iso_country;
+    public String getIsoCountry() {
+        return isoCountry;
     }
 
-    public void setIso_country(String iso_country) {
-        this.iso_country = iso_country;
+    public void setIsoCountry(String isoCountry) {
+        this.isoCountry = isoCountry;
     }
 
-    public String getIso_region() {
-        return iso_region;
+    public String getIsoRegion() {
+        return isoRegion;
     }
 
-    public void setIso_region(String iso_region) {
-        this.iso_region = iso_region;
+    public void setIsoRegion(String isoRegion) {
+        this.isoRegion = isoRegion;
     }
 
     public String getMunicipality() {
@@ -112,52 +119,52 @@ public class Airport {
         this.municipality = municipality;
     }
 
-    public String getScheduled_service() {
-        return scheduled_service;
+    public String getScheduledService() {
+        return scheduledService;
     }
 
-    public void setScheduled_service(String scheduled_service) {
-        this.scheduled_service = scheduled_service;
+    public void setScheduledService(String scheduledService) {
+        this.scheduledService = scheduledService;
     }
 
-    public String getGps_code() {
-        return gps_code;
+    public String getGpsCode() {
+        return gpsCode;
     }
 
-    public void setGps_code(String gps_code) {
-        this.gps_code = gps_code;
+    public void setGpsCode(String gpsCode) {
+        this.gpsCode = gpsCode;
     }
 
-    public String getIata_code() {
-        return iata_code;
+    public String getIataCode() {
+        return iataCode;
     }
 
-    public void setIata_code(String iata_code) {
-        this.iata_code = iata_code;
+    public void setIataCode(String iataCode) {
+        this.iataCode = iataCode;
     }
 
-    public String getLocal_code() {
-        return local_code;
+    public String getLocalCode() {
+        return localCode;
     }
 
-    public void setLocal_code(String local_code) {
-        this.local_code = local_code;
+    public void setLocalCode(String localCode) {
+        this.localCode = localCode;
     }
 
-    public String getHome_link() {
-        return home_link;
+    public String getHomeLink() {
+        return homeLink;
     }
 
-    public void setHome_link(String home_link) {
-        this.home_link = home_link;
+    public void setHomeLink(String homeLink) {
+        this.homeLink = homeLink;
     }
 
-    public String getWikipedia_link() {
-        return wikipedia_link;
+    public String getWikipediaLink() {
+        return wikipediaLink;
     }
 
-    public void setWikipedia_link(String wikipedia_link) {
-        this.wikipedia_link = wikipedia_link;
+    public void setWikipediaLink(String wikipediaLink) {
+        this.wikipediaLink = wikipediaLink;
     }
 
     public String getKeywords() {

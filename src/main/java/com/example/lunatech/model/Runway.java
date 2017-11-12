@@ -1,66 +1,76 @@
 package com.example.lunatech.model;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+@Document(collection = "runways")
 public class Runway {
 
-    private String id;
-    private String airport_ref;
-    private String airport_ident;
-    private String length_ft;
-    private String width_ft;
+    @Id
+    ObjectId databaseId;
+
+    private int id;
+    private String airportRef;
+    @Field("airport_ident")
+    private String airportIdent;
+    private String lengthFt;
+    private String widthFt;
     private String surface;
     private String lighted;
     private String closed;
-    private String le_ident;
-    private String le_latitude_deg;
-    private String le_longitude_deg;
-    private String le_elevation_ft;
-    private String le_heading_degT;
-    private String le_displaced_threshold_ft;
-    private String he_ident;
-    private String he_latitude_deg;
-    private String he_longitude_deg;
-    private String he_elevation_ft;
-    private String he_heading_degT;
-    private String he_displaced_threshold_ft;
+    private String leIdent;
+    private String leLatitudeDeg;
+    private String leLongitudeDeg;
+    private String leElevationFt;
+    private String leHeadingDegT;
+    private String leDisplacedThresholdFt;
+    private String heIdent;
+    private String heLatitudeDeg;
+    private String heLongitudeDeg;
+    private String heElevationFt;
+    private String heHeadingDegT;
+    private String heDisplacedThresholdFt;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getAirport_ref() {
-        return airport_ref;
+    public String getAirportRef() {
+        return airportRef;
     }
 
-    public void setAirport_ref(String airport_ref) {
-        this.airport_ref = airport_ref;
+    public void setAirportRef(String airportRef) {
+        this.airportRef = airportRef;
     }
 
-    public String getAirport_ident() {
-        return airport_ident;
+    public String getAirportIdent() {
+        return airportIdent;
     }
 
-    public void setAirport_ident(String airport_ident) {
-        this.airport_ident = airport_ident;
+    public void setAirportIdent(String airportIdent) {
+        this.airportIdent = airportIdent;
     }
 
-    public String getLength_ft() {
-        return length_ft;
+    public String getLengthFt() {
+        return lengthFt;
     }
 
-    public void setLength_ft(String length_ft) {
-        this.length_ft = length_ft;
+    public void setLengthFt(String lengthFt) {
+        this.lengthFt = lengthFt;
     }
 
-    public String getWidth_ft() {
-        return width_ft;
+    public String getWidthFt() {
+        return widthFt;
     }
 
-    public void setWidth_ft(String width_ft) {
-        this.width_ft = width_ft;
+    public void setWidthFt(String widthFt) {
+        this.widthFt = widthFt;
     }
 
     public String getSurface() {
@@ -87,99 +97,99 @@ public class Runway {
         this.closed = closed;
     }
 
-    public String getLe_ident() {
-        return le_ident;
+    public String getLeIdent() {
+        return leIdent;
     }
 
-    public void setLe_ident(String le_ident) {
-        this.le_ident = le_ident;
+    public void setLeIdent(String leIdent) {
+        this.leIdent = leIdent;
     }
 
-    public String getLe_latitude_deg() {
-        return le_latitude_deg;
+    public String getLeLatitudeDeg() {
+        return leLatitudeDeg;
     }
 
-    public void setLe_latitude_deg(String le_latitude_deg) {
-        this.le_latitude_deg = le_latitude_deg;
+    public void setLeLatitudeDeg(String leLatitudeDeg) {
+        this.leLatitudeDeg = leLatitudeDeg;
     }
 
-    public String getLe_longitude_deg() {
-        return le_longitude_deg;
+    public String getLeLongitudeDeg() {
+        return leLongitudeDeg;
     }
 
-    public void setLe_longitude_deg(String le_longitude_deg) {
-        this.le_longitude_deg = le_longitude_deg;
+    public void setLeLongitudeDeg(String leLongitudeDeg) {
+        this.leLongitudeDeg = leLongitudeDeg;
     }
 
-    public String getLe_elevation_ft() {
-        return le_elevation_ft;
+    public String getLeElevationFt() {
+        return leElevationFt;
     }
 
-    public void setLe_elevation_ft(String le_elevation_ft) {
-        this.le_elevation_ft = le_elevation_ft;
+    public void setLeElevationFt(String leElevationFt) {
+        this.leElevationFt = leElevationFt;
     }
 
-    public String getLe_heading_degT() {
-        return le_heading_degT;
+    public String getLeHeadingDegT() {
+        return leHeadingDegT;
     }
 
-    public void setLe_heading_degT(String le_heading_degT) {
-        this.le_heading_degT = le_heading_degT;
+    public void setLeHeadingDegT(String leHeadingDegT) {
+        this.leHeadingDegT = leHeadingDegT;
     }
 
-    public String getLe_displaced_threshold_ft() {
-        return le_displaced_threshold_ft;
+    public String getLeDisplacedThresholdFt() {
+        return leDisplacedThresholdFt;
     }
 
-    public void setLe_displaced_threshold_ft(String le_displaced_threshold_ft) {
-        this.le_displaced_threshold_ft = le_displaced_threshold_ft;
+    public void setLeDisplacedThresholdFt(String leDisplacedThresholdFt) {
+        this.leDisplacedThresholdFt = leDisplacedThresholdFt;
     }
 
-    public String getHe_ident() {
-        return he_ident;
+    public String getHeIdent() {
+        return heIdent;
     }
 
-    public void setHe_ident(String he_ident) {
-        this.he_ident = he_ident;
+    public void setHeIdent(String heIdent) {
+        this.heIdent = heIdent;
     }
 
-    public String getHe_latitude_deg() {
-        return he_latitude_deg;
+    public String getHeLatitudeDeg() {
+        return heLatitudeDeg;
     }
 
-    public void setHe_latitude_deg(String he_latitude_deg) {
-        this.he_latitude_deg = he_latitude_deg;
+    public void setHeLatitudeDeg(String heLatitudeDeg) {
+        this.heLatitudeDeg = heLatitudeDeg;
     }
 
-    public String getHe_longitude_deg() {
-        return he_longitude_deg;
+    public String getHeLongitudeDeg() {
+        return heLongitudeDeg;
     }
 
-    public void setHe_longitude_deg(String he_longitude_deg) {
-        this.he_longitude_deg = he_longitude_deg;
+    public void setHeLongitudeDeg(String heLongitudeDeg) {
+        this.heLongitudeDeg = heLongitudeDeg;
     }
 
-    public String getHe_elevation_ft() {
-        return he_elevation_ft;
+    public String getHeElevationFt() {
+        return heElevationFt;
     }
 
-    public void setHe_elevation_ft(String he_elevation_ft) {
-        this.he_elevation_ft = he_elevation_ft;
+    public void setHeElevationFt(String heElevationFt) {
+        this.heElevationFt = heElevationFt;
     }
 
-    public String getHe_heading_degT() {
-        return he_heading_degT;
+    public String getHeHeadingDegT() {
+        return heHeadingDegT;
     }
 
-    public void setHe_heading_degT(String he_heading_degT) {
-        this.he_heading_degT = he_heading_degT;
+    public void setHeHeadingDegT(String heHeadingDegT) {
+        this.heHeadingDegT = heHeadingDegT;
     }
 
-    public String getHe_displaced_threshold_ft() {
-        return he_displaced_threshold_ft;
+    public String getHeDisplacedThresholdFt() {
+        return heDisplacedThresholdFt;
     }
 
-    public void setHe_displaced_threshold_ft(String he_displaced_threshold_ft) {
-        this.he_displaced_threshold_ft = he_displaced_threshold_ft;
+    public void setHeDisplacedThresholdFt(String heDisplacedThresholdFt) {
+        this.heDisplacedThresholdFt = heDisplacedThresholdFt;
     }
 }
