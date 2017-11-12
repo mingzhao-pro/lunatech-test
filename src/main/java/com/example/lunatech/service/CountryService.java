@@ -14,4 +14,6 @@ public interface CountryService {
     List<Airport> findAirports(String codeOrName);
 
     Map<Airport, List<Runway>> findAirportsAndAssociatedRunways(String codeOrName);
+
+    List<Country> findByCodeIn(List<String> codes);
 }

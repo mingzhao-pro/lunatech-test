@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface AirportRepository extends MongoRepository<Airport, String>{
     List<Airport> findByIsoCountry(String isoCountry);
+
 }

@@ -71,4 +71,9 @@ public class CountryServiceImpl implements CountryService {
         }
         return airportAndRunways;
     }
+
+    @Override
+    public List<Country> findByCodeIn(List<String> codes) {
+        return countryRepository.findByCodeIn(codes);
+    }
 }

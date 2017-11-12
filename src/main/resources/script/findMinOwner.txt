@@ -1,0 +1,25 @@
+db.airports.aggregate([
+	{
+		$group:
+		{
+			_id: "$iso_country", 
+			count: { $sum: 1}
+		}
+	},
+	{
+		$group:
+		{
+			_id: "$count",
+			codes: { $addToSet: "$_id"}
+		}
+	},
+	{
+		$sort: { _id: 1}
+	},
+	{
+		$project: {_id: 0}
+	},
+	{
+		$limit: 1
+	}
+])
