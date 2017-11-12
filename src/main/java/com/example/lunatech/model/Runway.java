@@ -20,6 +20,7 @@ public class Runway {
     private String surface;
     private String lighted;
     private String closed;
+    @Field("le_ident")
     private String leIdent;
     private String leLatitudeDeg;
     private String leLongitudeDeg;

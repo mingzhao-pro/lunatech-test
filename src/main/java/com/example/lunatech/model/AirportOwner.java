@@ -1,6 +1,7 @@
 package com.example.lunatech.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class AirportOwner {
     int count;

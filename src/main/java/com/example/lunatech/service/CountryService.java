@@ -6,6 +6,7 @@ import com.example.lunatech.model.Runway;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface CountryService {
 
@@ -13,7 +14,7 @@ public interface CountryService {
 
     List<Airport> findAirports(String codeOrName);
 
-    Map<Airport, List<Runway>> findAirportsAndAssociatedRunways(String codeOrName);
+    Set<String> findRunwaySurfaces(String codeOrName);
 
     List<Country> findByCodeIn(List<String> codes);
 }

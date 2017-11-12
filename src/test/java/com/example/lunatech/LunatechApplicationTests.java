@@ -5,6 +5,7 @@ import com.example.lunatech.model.Country;
 import com.example.lunatech.model.Runway;
 import com.example.lunatech.service.AirportService;
 import com.example.lunatech.service.CountryService;
+import com.example.lunatech.service.RunwayService;
 import javafx.util.Pair;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +25,9 @@ public class LunatechApplicationTests {
 
     @Autowired
     private AirportService airportService;
+
+    @Autowired
+    private RunwayService runwayService;
 
     @Test
     public void findByCodeOrName() {
@@ -53,19 +57,19 @@ public class LunatechApplicationTests {
     public void findAssociatedAirports() {
         //input: code = "AW", output: airport of ident: "TNCA"
         List<Airport> airports = countryService.findAirports("AW");
-        assert(airports.size() == 1);
-        assert(airports.get(0).getIdent().equals("TNCA"));
+        assert (airports.size() == 1);
+        assert (airports.get(0).getIdent().equals("TNCA"));
 
         //input: code = "BN", output: airports of ident: "WBSB", "WBAK"
         airports = countryService.findAirports("BN");
-        assert(airports.size() == 2);
+        assert (airports.size() == 2);
 
         Set<String> iso_countrySet = new HashSet<>();
-        for(Airport airport : airports) {
+        for (Airport airport : airports) {
             iso_countrySet.add(airport.getIdent());
         }
-        assert(iso_countrySet.contains("WBSB"));
-        assert(iso_countrySet.contains("WBAK"));
+        assert (iso_countrySet.contains("WBSB"));
+        assert (iso_countrySet.contains("WBAK"));
     }
 
     @Test
@@ -74,39 +78,75 @@ public class LunatechApplicationTests {
         List<Airport> airports = countryService.findAirports("Macau");
         List<Runway> runways = new ArrayList<>();
 
-        for(Airport airport : airports) {
+        for (Airport airport : airports) {
             runways.addAll(airportService.findRunways(airport.getIdent()));
         }
 
-        assert(runways.size() == 1);
-        assert(runways.get(0).getId() == 237541);
+        assert (runways.size() == 1);
+        assert (runways.get(0).getId() == 237541);
     }
 
     @Test
     public void find10MaxAirportOwners() {
         // output is 10 countries corresponding to the codeReference
         List codeReference = Arrays.asList("US", "BR", "CA", "AU", "RU", "FR", "AR", "DE", "CO", "VE");
-        List<Country> countries = airportService.findMaxOwner();
+        Map<Country, Set<String>> countries = airportService.findMaxOwner();
         List<String> code = new ArrayList<>();
-        for(Country country : countries) {
+        for (Country country : countries.keySet()) {
             code.add(country.getCode());
         }
 
-        assert(code.containsAll(codeReference));
+        assert (code.containsAll(codeReference));
     }
 
     @Test
     public void findMinAirportOwners() {
         // output is 24 countries which has 1 airport
         List<String> reference = Arrays.asList("TV", "YT", "GM", "AW", "NF", "CW", "CC", "CX", "MQ", "MO", "SH", "VA", "BL", "ZZ", "SX", "IO", "JE", "AD", "NR", "MC", "NU", "AI", "LI", "GI");
-        Pair<Integer, List<Country>> result = airportService.findMinOwner();
-        assert(result.getKey() == 1);
+        Pair<Integer, Map<Country, Set<String>>> result = airportService.findMinOwner();
+        assert (result.getKey() == 1);
 
-        List<Country> countries = result.getValue();
-        assert(countries.size() == reference.size());
+        Set<Country> countries = result.getValue().keySet();
+        assert (countries.size() == reference.size());
 
         List<String> code = countries.stream().map(Country::getCode).collect(Collectors.toList());
-        assert(code.containsAll(reference));
+        assert (code.containsAll(reference));
+    }
 
+    @Test
+    public void returnRunwayWithOnlySurface() {
+        // input: airport_ident: "TNCA"  output: "ASP"
+        Set<String> ident = new HashSet<>();
+        ident.add("TNCA");
+        Set<String> surfaces = runwayService.findSurfacesByAirportIdents(ident);
+        assert (surfaces.size() == 1);
+        assert (surfaces.contains("ASP"));
+
+        ident.clear();
+        ident.add("toto");
+        // input: "toto" output: ""
+        surfaces = runwayService.findSurfacesByAirportIdents(ident);
+        assert (surfaces.size() == 0);
+    }
+
+    @Test
+    public void returnRunwaysByCountryName() {
+        // input: "Aruba", output: "ASP"
+        Set<String> surfaces = countryService.findRunwaySurfaces("Aruba");
+        assert(surfaces.size() == 1);
+        assert(surfaces.contains("ASP"));
+
+        // input: "toto", output: ""
+        surfaces.clear();
+        surfaces = countryService.findRunwaySurfaces("toto");
+        assert(surfaces.size() == 0);
+    }
+
+    @Test
+    public void returnMostPopularRunwayIdent() {
+        List<String> reference = Arrays.asList("H1", "18", "9", "17", "8", "16", "12", "7", "14", "13");
+        List<String> results = runwayService.findMostPopularIdent();
+        assert(results.size() == reference.size());
+        assert(results.containsAll(reference));
     }
 }

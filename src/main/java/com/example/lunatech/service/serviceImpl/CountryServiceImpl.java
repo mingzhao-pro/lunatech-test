@@ -6,16 +6,15 @@ import com.example.lunatech.model.Runway;
 import com.example.lunatech.repository.CountryRepository;
 import com.example.lunatech.service.AirportService;
 import com.example.lunatech.service.CountryService;
+import com.example.lunatech.service.RunwayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -27,6 +26,9 @@ public class CountryServiceImpl implements CountryService {
 
     @Autowired
     private CountryRepository countryRepository;
+
+    @Autowired
+    private RunwayService runwayService;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -54,26 +56,25 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public List<Airport> findAirports(String code) {
         Country country = findByCodeOrName(code);
-        return airportService.findByIsoCountry(country.getCode());
-    }
-
-    @Override
-    public Map<Airport, List<Runway>> findAirportsAndAssociatedRunways(String codeOrName) {
-        Map<Airport, List<Runway>> airportAndRunways = new HashMap<>();
-        List<Airport> airports = findAirports(codeOrName);
-        for (Airport airport : airports) {
-            List<Runway> runways = airportService.findRunways(airport.getIdent());
-            // runways is less than airport, so some airports don't have a runway
-            if (runways == null) {
-                runways = new ArrayList<>();
-            }
-            airportAndRunways.put(airport, runways);
+        if(country != null) {
+            return airportService.findByIsoCountry(country.getCode());
         }
-        return airportAndRunways;
+        return new ArrayList<>();
     }
 
     @Override
     public List<Country> findByCodeIn(List<String> codes) {
         return countryRepository.findByCodeIn(codes);
+    }
+
+    @Override
+    public Set<String> findRunwaySurfaces(String codeOrName) {
+        List<Airport> airports = findAirports(codeOrName);
+        Set<String> airportIdents = new HashSet<>();
+        if(airports != null) {
+            airportIdents = airports.stream().map(Airport::getIdent).collect(Collectors.toSet());
+            return runwayService.findSurfacesByAirportIdents(airportIdents);
+        }
+        return airportIdents;
     }
 }

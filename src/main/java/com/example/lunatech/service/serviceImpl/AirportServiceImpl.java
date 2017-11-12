@@ -16,8 +16,7 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
@@ -52,7 +51,7 @@ public class AirportServiceImpl implements AirportService {
      * @return
      */
     @Override
-    public List<Country> findMaxOwner() {
+    public Map<Country, Set<String>> findMaxOwner() {
         Aggregation agg = newAggregation(
                 group("isoCountry").count().as("count"),
                 sort(Sort.Direction.DESC, "count"),
@@ -65,13 +64,21 @@ public class AirportServiceImpl implements AirportService {
         List<AirportOwner> airportOwners = results.getMappedResults();
         List<String> codes = new ArrayList<>();
         for (AirportOwner owner : airportOwners) {
-            codes.add(owner.getMaxOwner());
+            String maxOwner = owner.getMaxOwner();
+            codes.add(maxOwner);
         }
-        return countryService.findByCodeIn(codes);
+
+        List<Country> countries = countryService.findByCodeIn(codes);
+        Map<Country, Set<String>> countryWithSurfaces = new HashMap<>();
+        for(Country country : countries) {
+            Set<String> surfaces = countryService.findRunwaySurfaces(country.getCode());
+            countryWithSurfaces.put(country, surfaces);
+        }
+        return countryWithSurfaces;
     }
 
     @Override
-    public Pair<Integer, List<Country>> findMinOwner() {
+    public Pair<Integer, Map<Country, Set<String>> > findMinOwner() {
 
         Aggregation agg = newAggregation(
                 group("isoCountry").count().as("count"),
@@ -82,8 +89,13 @@ public class AirportServiceImpl implements AirportService {
         );
 
         AirportOwner result = mongoTemplate.aggregate(agg, Airport.class, AirportOwner.class).getUniqueMappedResult();
+        Map<Country, Set<String>> countryWithSurfaces = new HashMap<>();
         List<Country> countries = countryService.findByCodeIn(result.getMinOwner());
-        return new Pair<>(result.getCount(), countries);
+        for(Country country : countries) {
+            Set<String> surfaces = countryService.findRunwaySurfaces(country.getCode());
+            countryWithSurfaces.put(country, surfaces);
+        }
+        return new Pair<>(result.getCount(), countryWithSurfaces);
     }
 }
 
