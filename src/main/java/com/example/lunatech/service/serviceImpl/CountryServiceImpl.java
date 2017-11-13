@@ -47,7 +47,7 @@ public class CountryServiceImpl implements CountryService {
         Criteria codeCriteria = where("code").regex("(?i)" + codeOrName);
 
         // make "name" partial match
-        Criteria nameCriteria = where("name").regex("[a-zA-Z]{0,}" + codeOrName + "[a-zA-Z]{0,}");
+        Criteria nameCriteria = where("name").regex("(?i)[a-zA-Z]{0,}" + codeOrName + "[a-zA-Z]{0,}");
         Criteria criteria = new Criteria();
         criteria.orOperator(codeCriteria, nameCriteria);
         return mongoTemplate.findOne(new Query(criteria), Country.class);

@@ -51,6 +51,10 @@ public class LunatechApplicationTests {
         //input: name = "hanis", output: country of id 302619
         country = countryService.findByCodeOrName("hanis");
         assert (country.getId() == id);
+
+        //input: name = "afgh", output: country of id 302619
+        country = countryService.findByCodeOrName("afgh");
+        assert (country.getId() == id);
     }
 
     @Test
@@ -90,7 +94,7 @@ public class LunatechApplicationTests {
     public void find10MaxAirportOwners() {
         // output is 10 countries corresponding to the codeReference
         List codeReference = Arrays.asList("US", "BR", "CA", "AU", "RU", "FR", "AR", "DE", "CO", "VE");
-        Map<Country, Set<String>> countries = airportService.findMaxOwner();
+        Map<Country, Pair<Integer, Set<String>>> countries = airportService.findMaxOwner();
         List<String> code = new ArrayList<>();
         for (Country country : countries.keySet()) {
             code.add(country.getCode());
@@ -103,10 +107,11 @@ public class LunatechApplicationTests {
     public void findMinAirportOwners() {
         // output is 24 countries which has 1 airport
         List<String> reference = Arrays.asList("TV", "YT", "GM", "AW", "NF", "CW", "CC", "CX", "MQ", "MO", "SH", "VA", "BL", "ZZ", "SX", "IO", "JE", "AD", "NR", "MC", "NU", "AI", "LI", "GI");
-        Pair<Integer, Map<Country, Set<String>>> result = airportService.findMinOwner();
-        assert (result.getKey() == 1);
+        Map<Country, Pair<Integer, Set<String>>> result = airportService.findMinOwner();
 
-        Set<Country> countries = result.getValue().keySet();
+        assert (result.values().stream().allMatch(x -> x.getKey() == 1));
+
+        Set<Country> countries = result.keySet();
         assert (countries.size() == reference.size());
 
         List<String> code = countries.stream().map(Country::getCode).collect(Collectors.toList());
