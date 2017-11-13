@@ -46,4 +46,9 @@ public class QueryAndReportController {
         maxOwner.putAll(minOwner);
         return maxOwner;
     }
+
+    @RequestMapping("/mostPopularSurface")
+    public List<String> getSurface() {
+        return runwayService.findMostPopularIdent();
+    }
 }
