@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
@@ -51,7 +52,7 @@ public class AirportServiceImpl implements AirportService {
      * @return
      */
     @Override
-    public LinkedHashMap<Country, Pair<Integer, Set<String>>> findMaxOwner() {
+    public List<Country> findMaxOwner() {
         Aggregation agg = newAggregation(
                 group("isoCountry").count().as("count"),
                 sort(Sort.Direction.DESC, "count"),
@@ -61,34 +62,29 @@ public class AirportServiceImpl implements AirportService {
 
         AggregationResults<AirportOwner> results = mongoTemplate.aggregate(agg, Airport.class, AirportOwner.class);
 
-        // <countryCode, airportCount>
-        Map<String, Integer> nbPerCountry = new HashMap<>();
-
+        Map<String, Integer> nbAirportPerCountry = new HashMap<>();
         List<AirportOwner> airportOwners = results.getMappedResults();
         List<String> codes = new ArrayList<>();
+
         for (AirportOwner owner : airportOwners) {
             String maxOwner = owner.getMaxOwner();
             codes.add(maxOwner);
-            nbPerCountry.put(maxOwner, owner.getCount());
+            nbAirportPerCountry.put(maxOwner, owner.getCount());
         }
 
         List<Country> countries = countryService.findByCodeIn(codes);
-        Map<Country, Set<String>> countryWithSurfaces = new HashMap<>();
         for (Country country : countries) {
-            Set<String> surfaces = countryService.findRunwaySurfaces(country.getCode());
-            countryWithSurfaces.put(country, surfaces);
-        }
 
-        LinkedHashMap<Country, Pair<Integer, Set<String>>> result = new LinkedHashMap<>();
-        for (Country country : countryWithSurfaces.keySet()) {
-            Pair pair = new Pair<>(nbPerCountry.get(country.getCode()), countryWithSurfaces.get(country));
-            result.put(country, pair);
+            Set<String> surfaces = countryService.findRunwaySurfaces(country.getCode())
+                    .stream().filter(x -> x != null && !x.isEmpty()).collect(Collectors.toSet()); // remove empty surface
+            country.setSurfacesOfRunways(surfaces);
+            country.setNbAirport(nbAirportPerCountry.get(country.getCode()));
         }
-        return result;
+        return countries;
     }
 
     @Override
-    public LinkedHashMap<Country, Pair<Integer, Set<String>>> findMinOwner() {
+    public List<Country> findMinOwner() {
 
         Aggregation agg = newAggregation(
                 group("isoCountry").count().as("count"),
@@ -101,12 +97,15 @@ public class AirportServiceImpl implements AirportService {
         AirportOwner airportOwner = mongoTemplate.aggregate(agg, Airport.class, AirportOwner.class).getUniqueMappedResult();
         int count = airportOwner.getCount();
 
-        LinkedHashMap<Country, Pair<Integer, Set<String>>> result = new LinkedHashMap<>();
-        for (Country country : countryService.findByCodeIn(airportOwner.getMinOwner())) {
-            Pair pair = new Pair<>(count, countryService.findRunwaySurfaces(country.getCode()));
-            result.put(country, pair);
+        List<Country> countries = countryService.findByCodeIn(airportOwner.getMinOwner());
+        for (Country country : countries) {
+            Set<String> surfaces = countryService.findRunwaySurfaces(country.getCode())
+                    .stream().filter(x -> x != null && !x.isEmpty()).collect(Collectors.toSet()); // remove empty surface;
+            country.setSurfacesOfRunways(surfaces);
+            country.setNbAirport(count);
         }
-        return result;
+
+        return countries;
     }
 }
 

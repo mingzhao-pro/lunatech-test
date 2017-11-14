@@ -4,6 +4,8 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Set;
+
 @Document(collection = "countries")
 public class Country {
 
@@ -11,6 +13,8 @@ public class Country {
     ObjectId databaseId;
 
     private int id;
+
+    private int nbAirport;
 
     private String code;
 
@@ -22,9 +26,18 @@ public class Country {
 
     private String keywords;
 
-    // code to Airport iso_country
-    // one to 0...N
-//    private Set<String> airports;
+    private Set<String> airports;
+
+    private Set<String> surfacesOfRunways;
+
+
+    public ObjectId getDatabaseId() {
+        return databaseId;
+    }
+
+    public void setDatabaseId(ObjectId databaseId) {
+        this.databaseId = databaseId;
+    }
 
     public int getId() {
         return id;
@@ -32,6 +45,14 @@ public class Country {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getNbAirport() {
+        return nbAirport;
+    }
+
+    public void setNbAirport(int nbAirport) {
+        this.nbAirport = nbAirport;
     }
 
     public String getCode() {
@@ -74,11 +95,19 @@ public class Country {
         this.keywords = keywords;
     }
 
-//    public Set<String> getAirports() {
-//        return airports;
-//    }
-//
-//    public void setAirports(Set<String> airports) {
-//        this.airports = airports;
-//    }
+    public Set<String> getAirports() {
+        return airports;
+    }
+
+    public void setAirports(Set<String> airports) {
+        this.airports = airports;
+    }
+
+    public Set<String> getSurfacesOfRunways() {
+        return surfacesOfRunways;
+    }
+
+    public void setSurfacesOfRunways(Set<String> surfacesOfRunways) {
+        this.surfacesOfRunways = surfacesOfRunways;
+    }
 }

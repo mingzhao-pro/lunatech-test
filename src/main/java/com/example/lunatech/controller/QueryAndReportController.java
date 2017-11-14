@@ -29,7 +29,6 @@ public class QueryAndReportController {
     @RequestMapping("/query")
     public Map<Airport, List<Runway>> get(@RequestParam(name = "country") String codeOrName) {
         Map<Airport, List<Runway>> results = new HashMap<>();
-
         for (Airport airport : countryService.findAirports(codeOrName)) {
             List<Runway> runways = runwayService.findByAirportIdent(airport.getIdent());
             results.put(airport, runways);
@@ -38,13 +37,12 @@ public class QueryAndReportController {
         return results;
     }
 
-
     @RequestMapping("/report")
-    public LinkedHashMap<Country, Pair<Integer, Set<String>>> get() {
-        LinkedHashMap<Country, Pair<Integer, Set<String>>> maxOwner = airportService.findMaxOwner();
-        LinkedHashMap<Country, Pair<Integer, Set<String>>> minOwner = airportService.findMinOwner();
-        maxOwner.putAll(minOwner);
-        return maxOwner;
+    public List<Country> get() {
+        List<Country> maxOwners = airportService.findMaxOwner();
+        List<Country> minOwners = airportService.findMinOwner();
+        maxOwners.addAll(minOwners);
+        return maxOwners;
     }
 
     @RequestMapping("/mostPopularSurface")

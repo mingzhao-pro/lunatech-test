@@ -175,11 +175,11 @@ public class Airport {
         this.keywords = keywords;
     }
 //
-//    public Set<Runway> getRunways() {
+//    public Set<Runway> getSurfacesOfRunways() {
 //        return runways;
 //    }
 //
-//    public void setRunways(Set<Runway> runways) {
+//    public void setSurfacesOfRunways(Set<Runway> runways) {
 //        this.runways = runways;
 //    }
 }

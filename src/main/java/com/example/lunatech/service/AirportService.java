@@ -15,7 +15,7 @@ public interface AirportService {
 
     List<Runway> findRunways(String ident);
 
-    LinkedHashMap<Country, Pair<Integer, Set<String>>> findMaxOwner();
+    List<Country> findMaxOwner();
 
-    LinkedHashMap<Country, Pair<Integer, Set<String>>> findMinOwner();
+    List<Country> findMinOwner();
 }
