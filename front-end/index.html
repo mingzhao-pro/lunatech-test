@@ -1,0 +1,66 @@
+<!doctype html>
+<html ng-app="demo">
+<head>
+    <title>Hello AngularJS</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="hello.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
+</head>
+
+<body ng-controller="Demo">
+
+    <div class="card-body">
+        <button ng-click="clear()" type="button" class="btn btn-info">Clear</button>
+        <button ng-click="report()" type="button" class="btn btn-info">Report</button>
+        <div>
+            Country code or name: <input ng-model="country" placeholder="insensitive, partial match" type="text" style="width:75%"/>
+            <button ng-click="query()" type="button" class="btn btn-info">Search</button>
+
+            <div>
+                <ul ng-repeat="airport in airports" ng-if="airports" class="list-group">
+                    <li class="alert alert-info list-group-item">
+                        <p>country code: {{ airport.isoCountry }}</p>
+                        <p>airport ident: {{ airport.ident}} </p>
+                        <p>airport name: {{ airport.name}} </p>
+
+                        <ul ng-repeat="runway in airport.runways">
+                            <li>
+                                <p>runway id: {{ runway.id }}</p>
+                                <p>runway surface: {{ runway.surface }}</p>
+                                <p>runway le_ident: {{ runway.leIdent }}</p>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <h3 ng-if="triggered"> Top10 Countries with most airports </h3>
+        <ul ng-repeat="country in max" ng-if="country" class="list-group">
+            <li class="alert alert-info list-group-item">
+                <p>country: {{country.name}}</p>
+                <p>airport number: {{country.nbAirport}}</p>
+                <p>surface types: {{country.surfacesOfRunways}}</p>
+            </li>
+        </ul>
+        <h3 ng-if="triggered">Countries with least airports </h3>
+        <ul class="list-group">
+                <p ng-if="triggered">Airport number: {{nbAirport}}</p>
+                <p ng-if="triggered">Contries: {{ countries }}</p>
+        </ul>
+        <h3 ng-if="triggered"> Top 10 most common runway identifications : {{ mostCommonRunways }}</h3>
+
+    </div>
+</body>
+</html>

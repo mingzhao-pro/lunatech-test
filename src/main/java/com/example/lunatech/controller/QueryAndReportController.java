@@ -27,22 +27,22 @@ public class QueryAndReportController {
     private RunwayService runwayService;
 
     @RequestMapping("/query")
-    public Map<Airport, List<Runway>> get(@RequestParam(name = "country") String codeOrName) {
-        Map<Airport, List<Runway>> results = new HashMap<>();
-        for (Airport airport : countryService.findAirports(codeOrName)) {
+    public List<Airport> get(@RequestParam(name = "country") String codeOrName) {
+        List<Airport> results = new ArrayList<>();
+        for (Airport airport : countryService.findAirports(codeOrName)){
             List<Runway> runways = runwayService.findByAirportIdent(airport.getIdent());
-            results.put(airport, runways);
+            airport.setRunways(runways);
+            results.add(airport);
         }
 
         return results;
     }
 
     @RequestMapping("/report")
-    public List<Country> get() {
+    public List<List<Country>> get() {
         List<Country> maxOwners = airportService.findMaxOwner();
         List<Country> minOwners = airportService.findMinOwner();
-        maxOwners.addAll(minOwners);
-        return maxOwners;
+        return Arrays.asList(maxOwners, minOwners);
     }
 
     @RequestMapping("/mostPopularSurface")

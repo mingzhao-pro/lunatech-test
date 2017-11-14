@@ -5,6 +5,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.List;
+import java.util.Set;
+
 @Document(collection = "airports")
 public class Airport {
 
@@ -29,7 +32,7 @@ public class Airport {
     private String homeLink;
     private String wikipediaLink;
     private String keywords;
-//    private Set<Runway> runways;
+    private List<Runway> runways;
 
     public String getId() {
         return id;
@@ -174,12 +177,12 @@ public class Airport {
     public void setKeywords(String keywords) {
         this.keywords = keywords;
     }
-//
-//    public Set<Runway> getSurfacesOfRunways() {
-//        return runways;
-//    }
-//
-//    public void setSurfacesOfRunways(Set<Runway> runways) {
-//        this.runways = runways;
-//    }
+
+    public List<Runway> getRunways() {
+        return runways;
+    }
+
+    public void setRunways(List<Runway> runways) {
+        this.runways = runways;
+    }
 }

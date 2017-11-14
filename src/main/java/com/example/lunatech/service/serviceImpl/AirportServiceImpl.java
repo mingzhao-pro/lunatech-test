@@ -80,6 +80,7 @@ public class AirportServiceImpl implements AirportService {
             country.setSurfacesOfRunways(surfaces);
             country.setNbAirport(nbAirportPerCountry.get(country.getCode()));
         }
+        countries.sort(Comparator.comparingInt(Country::getNbAirport).reversed());
         return countries;
     }
 
